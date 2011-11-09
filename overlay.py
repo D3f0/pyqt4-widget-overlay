@@ -119,12 +119,12 @@ class LabelOverlayWidget(QtGui.QLabel):
         
     def setParent(self, parent):
         self.updatePosition()
-        return super(OverlayLabel, self).setParent(parent)
+        return super(LabelOverlayWidget, self).setParent(parent)
   
     def updatePosition(self):
         parentGeo = self.parent().geometry()
         if not parentGeo:
-          return
+            return
         
         myGeo = self.geometry()
         #print parentGeo.width(), parentGeo.height()
