@@ -110,7 +110,7 @@ class Highlighter(QtGui.QSyntaxHighlighter):
 
 class ExampleOverlayedText(QtGui.QPlainTextEdit, PMXMessageOverlay):
     
-    FULL_THERESHOLD = 0.6
+    FULL_THERESHOLD = 0.4
     
     def __init__(self, parent = None):
         QtGui.QTextEdit.__init__(self, parent)
@@ -125,7 +125,7 @@ class ExampleOverlayedText(QtGui.QPlainTextEdit, PMXMessageOverlay):
         QtGui.QMessageBox.information(self, "Link activated", "You just clicked on %s" % link)
 
     def showBlockCount(self, newCount):
-        self.showMessage("Block count changed %s" % newCount)
+        self.showMessage("Block count changed to <i><b>%s</b></i>" % newCount)
     
 
 if __name__ == "__main__":

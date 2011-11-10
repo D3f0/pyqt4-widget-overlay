@@ -1,5 +1,4 @@
 from PyQt4 import QtCore, QtGui
-from Queue import Queue
 import re
 
 
@@ -14,10 +13,6 @@ class PMXMessageOverlay(object):
         * You should reimplement updateMessagePosition on subclasses
     '''
     def __init__(self):
-        
-        self.messages = Queue()
-        self.messageOverlay = LabelOverlayWidget(text = "", parent = self)
-        
         # Signals
         self.messageOverlay.fadedIn.connect(self.messageFadedIn)
         self.messageOverlay.fadedOut.connect(self.messageFadedOut)
@@ -66,7 +61,7 @@ class LabelOverlayWidget(QtGui.QLabel):
     
     
     STYLESHEET = '''
-    QLabel, a {
+    QLabel, link {
         color: rgb(0, 0, 0);
         background-color: rgb(248, 240, 200);
         border: 1px solid;
@@ -192,7 +187,7 @@ class LabelOverlayWidget(QtGui.QLabel):
                 self.fadedIn.emit()
                 
         elif self.speed < 0:
-            if self.opacity >= 0:
+            if self.opacity > 0:
                 self.opacity += self.speed
             else:
                 self.timer.stop()
@@ -218,8 +213,8 @@ class LabelOverlayWidget(QtGui.QLabel):
 
             
 #---------------------------------------------------------------------- 
-# Example
-#------------------------------------------------------------------------------ 
+# Example usage
+#---------------------------------------------------------------------- 
 
 class ExampleOverlayedText(QtGui.QTextEdit, PMXMessageOverlay):
     def __init__(self, parent = None):
