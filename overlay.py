@@ -14,22 +14,26 @@ class PMXMessageOverlay(object):
     '''
     def __init__(self):
         # Signals
+        self.messageOverlay = LabelOverlayWidget(text = "", parent = self)
         self.messageOverlay.fadedIn.connect(self.messageFadedIn)
         self.messageOverlay.fadedOut.connect(self.messageFadedOut)
         self.messageOverlay.messageClicked.connect(self.messageClicked)
         self.messageOverlay.linkActivated.connect(self.messageLinkActivated)
         
     def messageFadedIn(self):
+        ''' Override '''
         print "Message appeared"
         
     
     def messageFadedOut(self):
+        ''' Override '''
         print "Message disappeared"
     
     def messageLinkActivated(self, link):
-        print "Message link activated", link
-        
-    def showMessage(self, message, timeout = None, icon = None ):
+        ''' Override '''
+        pass
+    
+    def showMessage(self, message, timeout = None, icon = None, pos = None ):
         self.messageOverlay.setText(message)
         self.messageOverlay.updatePosition()
         self.messageOverlay.adjustSize()
@@ -100,6 +104,8 @@ class LabelOverlayWidget(QtGui.QLabel):
         x = parentRect.width() - self.width() - self.paddingLeft
         y = parentRect.height() - self.height() - self.paddingBottom
         self.setGeometry(x, y, self.width(), self.height())
+        
+        
     
     def resizeEvent(self, event):
         super(LabelOverlayWidget, self).resizeEvent(event)
@@ -234,9 +240,16 @@ class Window(QtGui.QWidget):
         QtGui.QWidget.__init__(self)
         self.setupUi()
         
-        self.lineedit.textChanged.connect(self.plaintext.showMessage)
+        self.lineedit.textChanged.connect(self.showNiceTooltip)
         self.plaintext.setPlainText("Please type here...")
+    
+    def showNiceTooltip(self, msg):
+        frnd = functools.partial(random.randint, 0, 255)
         
+        self.plaintext.messageOverlay.backgroundColor = QtGui.QColor(frnd(), frnd(), frnd())
+        self.plaintext.messageOverlay.color = QtGui.QColor(frnd(), frnd(), frnd())
+        self.plaintext.messageOverlay.borderColor = QtGui.QColor(frnd(), frnd(), frnd())
+        self.plaintext.showMessage(msg)
         
     def setupUi(self):
         self.setLayout(QtGui.QVBoxLayout())
@@ -247,8 +260,8 @@ class Window(QtGui.QWidget):
         self.layout().addWidget(QtGui.QLabel("Test messages here:"))
         self.layout().addWidget(self.lineedit)
         
-        
-        
+import random
+import functools
 
 if __name__ == "__main__":
     import sys
