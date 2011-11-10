@@ -18,10 +18,10 @@ class PMXMessageOverlay(object):
         self.messages = Queue()
         self.messageOverlay = LabelOverlayWidget(text = "", parent = self)
         
-        self.messageOverlay.alpha = .1
         # Signals
         self.messageOverlay.fadedIn.connect(self.messageFadedIn)
         self.messageOverlay.fadedOut.connect(self.messageFadedOut)
+        self.messageOverlay.messageClicked.connect(self.messageClicked)
         self.messageOverlay.linkActivated.connect(self.messageLinkActivated)
         
     def messageFadedIn(self):
@@ -44,8 +44,11 @@ class PMXMessageOverlay(object):
             self.messageOverlay.fadeOut()
             
     def clarMessage(self):
-        self.messageOverlay.setText('')
+        self.messageOverlay.fadeOut()
     
+    def messageClicked(self):
+        self.clarMessage()       
+        
     def updateMessagePosition(self):
         self.messageOverlay.updatePosition()
 
@@ -59,6 +62,7 @@ class LabelOverlayWidget(QtGui.QLabel):
     '''
     fadedOut = QtCore.pyqtSignal()
     fadedIn = QtCore.pyqtSignal()
+    messageClicked = QtCore.pyqtSignal()
     
     
     STYLESHEET = '''
@@ -173,6 +177,8 @@ class LabelOverlayWidget(QtGui.QLabel):
         self.__opacity = value
         self._updateStylesheetAlpha()
     
+    def mousePressEvent(self, event):
+        self.messageClicked.emit()
     
     def updateOpacity(self):
         
