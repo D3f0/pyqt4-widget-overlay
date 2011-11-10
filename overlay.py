@@ -8,9 +8,9 @@ class PMXMessageOverlay(object):
     messageFadedIn = QtCore.pyqtSignal()
     ''' 
     Mixin for displaying overlayed messages in a QWidget instance.
-    Please note that you shoudl:
+    Please note that you should:
         * Use the mixin on toplevel elements (no QWidgets, but QPlainTextEdit, QWebView, etc.)
-        * You should reimplement updateMessagePosition on subclasses
+        * You should call updateMessagePosition at least in resizeEvent of your subclass 
     '''
     def __init__(self):
         # Signals
@@ -22,12 +22,13 @@ class PMXMessageOverlay(object):
         
     def messageFadedIn(self):
         ''' Override '''
-        print "Message appeared"
-        
+        #print "Message appeared"
+        pass
     
     def messageFadedOut(self):
         ''' Override '''
-        print "Message disappeared"
+        #print "Message disappeared"
+        pass
     
     def messageLinkActivated(self, link):
         ''' Override '''
@@ -65,7 +66,7 @@ class LabelOverlayWidget(QtGui.QLabel):
     
     
     STYLESHEET = '''
-    QLabel, link {
+    QLabel, QLabel link {
         color: rgb(0, 0, 0);
         background-color: rgb(248, 240, 200);
         border: 1px solid;
